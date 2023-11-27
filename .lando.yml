@@ -1,0 +1,35 @@
+name: araprojecttest
+recipe: laravel
+config:
+  webroot: public
+  php: '8.1'
+  via: nginx
+  database: mariadb
+  composer_version: 2
+keys: false
+#Hot module reload and other mix fooshizzle
+services:
+  appserver:
+    scanner: false
+    overrides:
+      environment:
+          DB_CONNECTION: 'mysql'
+          DB_NAME: 'laravel'
+          DB_USER: 'laravel'
+          DB_PASSWORD: 'laravel'
+          DB_HOST: 'database'
+          DB_PORT: '3306'
+
+  node:
+    type: node:18
+    scanner: false
+    build:
+      - npm install -g npm@latest
+tooling:
+  npm:
+    service: node
+  npm-install:
+    service: node
+    description: Install node packages
+    cmd:
+      - npm ci
